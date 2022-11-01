@@ -5,7 +5,16 @@ Primero instalamos la version mas reciente del toolbox de robotica de Peter Cork
 
 
     git clone https://github.com/petercorke/robotics-toolbox-python.git
+    git clone https://github.com/jhavl/swift
+    git clone https://github.com/jhavl/spatialgeometry
+    git clone https://github.com/petercorke/spatialmath-python.git
     cd robotics-toolbox-python
+    pip3 install -e .
+    cd ../swift
+    pip3 install -e .
+    cd ../spatialgeometry
+    pip3 install -e .
+    cd ../spatialmath-python
     pip3 install -e .
 
 Posteriormente

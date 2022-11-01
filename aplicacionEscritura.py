@@ -71,11 +71,7 @@ if __name__== '__main__':
     try:
         print("Utilice W & S para subir o bajar entre articulaciones.")
         print("Utilice A & D para mover la articulacion a Home o a la posicion objetivo respectivamente.")
-        jointCommand(1, 'Torque_Limit', 500, 0)
-        jointCommand(2, 'Torque_Limit', 400, 0)
-        jointCommand(3, 'Torque_Limit', 300, 0)
-        jointCommand(4, 'Torque_Limit', 300, 0)
-        jointCommand(5, 'Torque_Limit', 300, 0)
+        limitTorque()
         ctrlMove()
     except rospy.ROSInterruptException:
         pass
