@@ -73,5 +73,5 @@ https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51
 
 ## Exactitud de la figura (Rectángulo)
 
-![Medidas_rectangulo1](images/AltoCuadrado.jpeg)
-![eMdidas_rectangulo2](images/AnchoCuadrado.jpeg)
+![Medidas_rectangulo1](Images/AltoCuadrado.jpeg)
+![Mdidas_rectangulo2](Images/AnchoCuadrado.jpeg)
