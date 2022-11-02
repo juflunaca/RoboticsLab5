@@ -40,7 +40,12 @@ Primero instalamos la version mas reciente del toolbox de robotica de Peter Cork
 
 
 ## Modelo de cinemática inversa 
+
+Primero
 * MTH de la herramienta
+
+Sabemos la posición y orientación del efector final que se puede dar en una MTH de la herramienta como la siguiente:
+
 
 $$ T= \begin{bmatrix}
 nx & ox & ax & xc\\ 
@@ -48,6 +53,24 @@ ny & oy & ay & yc\\
 nz & oz & az & zc\\ 
 0 & 0 & 0 & 1
 \end{bmatrix}$$
+
+Teniendo la posición en términos de xc, yc y zc, es fácil encontrar el valor de la primera articulación, y posteriormente determinar el modelo de cinemática inversa.
+
+En general debemos determinar la configuración articular de un manipulador, dadas la posición y orientación del efector final respecto a la base. Este problema puede resolverse mediante métodos geométricos, algebraicos o numéricos. En el caso particular del robot Phantom X el cual posee 4 GDL, el enfoque más práctico es combinar el método geométrico con el desacople de muñeca.
+
+
+El modelo geométrico construido se muestra a continuación.
+
+<p align="center"><img src="./Images/CI1.png" width=70%></p>
+
+y en general usando algunas relaciones geométricas tenemos:
+
+$$ q1= tan \left( \frac{y_T}{x_T}\right)$$
+$$ \theta_{3}= acos \left( \frac{r²+h²-l_2 ²-l_3 ²}{2l_2 l_3}\right)$$
+$$ \beta_{3}= atan2 \left( \frac{l_3 \sin{\theta_{3}}}{l_2 + l_3\cos{\theta_{3}}}\right)$$
+$$ \alpha = atan2 \left(\frac{h}{r}\right)$$
+$$ \theta_{2} = \alpha - \beta $$
+
 
 ## Métodos disponibles del toolbox para determinar la cinemática inversa de un manipulador.
 
@@ -65,15 +88,54 @@ Existen multiples comandos del toolbox de Peter Corke que funcionan para determi
 ## Video de la producción de trayectorias desarrolladas a partir de Python con el modelo de cinemática inversa
 
 
-<video width="320" height="240" controls>
+<video align="center" width="640" height="480" controls>
   <source src="./Video/VideoLAB5.mp4" type="video/mp4">
 </video>
 
+* Video (GH) *
 https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/VideoLAB5.mp4
+* Link video (Drive) *
+https://drive.google.com/file/d/1NqF9zoS2SGtQgKIfXYO85F51QDGeslfr/view?usp=sharing
 
-## Exactitud de la figura (Rectángulo)
+## Exactitud  y precisión
 
-<p align="center"><img src="./Images/AltoCuadrado.jpeg" width=40%></p>
+A continuación se muestra los resultados obtenidos a medir el rectángulo realizado por el manipualdor según la trayectoria y los via-points definidos en el script de python.
 
-<p align="center"><img src="./Images/AnchoCuadrado.jpeg" width=40%></p>
+* Altura del cuadrilatero
+
+Según lo definido inicialmente el la longitud de la "altura" de nuestro rectángulo debería ser de 4 cm, en este caso podemos ver a continuación que se obtiene una medida de aproximadamente 4.1mm, obteniendo el siguiente error:
+
+$$\delta = | \frac{v_A-v_E}{v_E} |\cdot 100 \% $$
+donde:
+
+
+$v_A$ = Valor observado
+
+
+$v_E$ = Valor Esperado
+
+
+$\delta$ = Error porcentual
+
+En este caso se obtiene un error del 2.5% o un error absoluto de +/- 1mm.
+
+<p align="center"><img src="./Images/AltoCuadrado.jpeg" width=38%></p>
+
+
+
+* Ancho del cuadrilatero
+
+
+Según lo definido inicialmente el la longitud del "ancho" de nuestro rectángulo debería ser de 10 cm, en este caso podemos ver a continuación que se obtiene una medida de aproximadamente 9.51mm, obteniendo que en este caso el error es de 4.9% y +/-0.49mm de error absoluto.
+
+
+<p align="center"><img src="./Images/AnchoCuadrado.jpeg" width=38%></p>
+
+Respecto a la precisión se seleccionó 30 via-points entre punto y punto, obteniendo el resultado mostrado en el video, como se evidencia los trazos no siguen completamente una trayectoria recta y se desvía ligeramente en algunos puntos, por lo que podríamos decir que la precisión obtenida fue baja debido a que entre punto y punto había un error presente lo suficientemente grande para desviar los trazos del manipualdor.
+
+## Conclusiones
+
+* La presición y exactitud del robot Phantom X es baja debido a que los movimientos son muy bruscos, incluso bajando el delta entre cada punto intermedio de una trayectoria no podemos obtener una trayectoria muy exacta o precisa, esto además se propaga debido a que varios robots del laboratorio tienen algo de libertad de rotación incluso estando energizados debido a que no están bien ajustados a los soportes.
+
+* Una buena comprensión de la cinemática inversa nos permité hacer nuestra propia implementación del control del movimiento del robot, lo cual fue fundamental para implementar la solución de nuestra alicación.
 
