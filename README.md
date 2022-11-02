@@ -67,4 +67,4 @@ nz & oz & az & zc\\
   <source src="./Video/VideoLAB5.mp4" type="video/mp4">
 </video>
 
-https://user-images.githubusercontent.com/71235347/188256426-ad711185-05a4-40bc-9e22-77289374c11d.mp4
+https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/VideoLAB5.mp4
