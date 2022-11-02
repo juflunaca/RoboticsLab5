@@ -20,7 +20,7 @@ ROS Noetic
 * Marcadores Borrables
 * Actitud y ganas de aprender.
 
-## 1. Instalación del toolbox de Peter Corke
+## Instalación del toolbox de Peter Corke
 
 Primero instalamos la version mas reciente del toolbox de robotica de Peter Corke para python siguiendo las instrucciones en su repositorio ([que se encuentra aqui](https://github.com/petercorke/robotics-toolbox-python.git)), corriendo los siguientes comandos en bash:
 
@@ -88,7 +88,7 @@ Existen multiples comandos del toolbox de Peter Corke que funcionan para determi
 * **SerialLink.ikine_sym** : Calcula la cinemática inversa de forma simbolica, con multiples celdas dependiendo del numero de configuraciones diferentes que se puedan tener para la solucion. Requiere el Symbolic Toolbox de Matlab y es codigo experimental.
 
 
-# Modelo de cinemática inversa del manipulador en Python:
+## Modelo de cinemática inversa del manipulador en Python:
 
 A continuación se presenta nuestra solución para el problema de cinemática inversa en Python para el robot Phantom X con configuración codo arriba.
 
