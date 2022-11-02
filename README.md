@@ -59,3 +59,12 @@ ny & oy & ay & yc\\
 nz & oz & az & zc\\ 
 0 & 0 & 0 & 1
 \end{bmatrix}$$
+
+## Video de la producción de trayectorias desarrolladas a partir de Python con el modelo de cinemática inversa
+
+
+<video width="320" height="240" controls>
+  <source src="./Video/VideoLAB5.mp4" type="video/mp4">
+</video>
+
+https://user-images.githubusercontent.com/71235347/188256426-ad711185-05a4-40bc-9e22-77289374c11d.mp4
