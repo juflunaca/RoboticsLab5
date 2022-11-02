@@ -15,7 +15,9 @@ ROS Noetic
 * Paquete del robot Phantom X. Tomado de: https://github.com/felipeg17/px_robot.
 * MATLAB 2015b o superior.
 * Robotics toolbox de mathworks.
+* Python 3.x.x
 * Toolbox de robótica de Peter Corke.
+* Marcadores Borrables
 * Actitud y ganas de aprender.
 
 ## 1. Instalación del toolbox de Peter Corke
@@ -36,7 +38,16 @@ Primero instalamos la version mas reciente del toolbox de robotica de Peter Cork
     cd ../spatialmath-python
     pip3 install -e .
 
-Posteriormente
+
+## Modelo de cinemática inversa 
+* MTH de la herramienta
+
+$$ T= \begin{bmatrix}
+nx & ox & ax & xc\\ 
+ny & oy & ay & yc\\ 
+nz & oz & az & zc\\ 
+0 & 0 & 0 & 1
+\end{bmatrix}$$
 
 ## Métodos disponibles del toolbox para determinar la cinemática inversa de un manipulador.
 
@@ -50,15 +61,6 @@ Existen multiples comandos del toolbox de Peter Corke que funcionan para determi
 * **SerialLink.ikine_sym** : Calcula la cinemática inversa de forma simbolica, con multiples celdas dependiendo del numero de configuraciones diferentes que se puedan tener para la solucion. Requiere el Symbolic Toolbox de Matlab y es codigo experimental.
 
 
-## Modelo de cinemática inversa 
-* MTH de la herramienta
-
-$$ T= \begin{bmatrix}
-nx & ox & ax & xc\\ 
-ny & oy & ay & yc\\ 
-nz & oz & az & zc\\ 
-0 & 0 & 0 & 1
-\end{bmatrix}$$
 
 ## Video de la producción de trayectorias desarrolladas a partir de Python con el modelo de cinemática inversa
 
@@ -68,3 +70,8 @@ nz & oz & az & zc\\
 </video>
 
 https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/VideoLAB5.mp4
+
+## Exactitud de la figura (Rectángulo)
+
+![Medidas_rectangulo1](images/AltoCuadrado.jpeg)
+![eMdidas_rectangulo2](images/AnchoCuadrado.jpeg)
