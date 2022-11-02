@@ -66,9 +66,13 @@ El modelo geométrico construido se muestra a continuación.
 y en general usando algunas relaciones geométricas tenemos:
 
 $$ q1= tan \left( \frac{y_T}{x_T}\right)$$
+
 $$ \theta_{3}= acos \left( \frac{r²+h²-l_2 ²-l_3 ²}{2l_2 l_3}\right)$$
+
 $$ \beta_{3}= atan2 \left( \frac{l_3 \sin{\theta_{3}}}{l_2 + l_3\cos{\theta_{3}}}\right)$$
+
 $$ \alpha = atan2 \left(\frac{h}{r}\right)$$
+
 $$ \theta_{2} = \alpha - \beta $$
 
 
