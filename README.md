@@ -61,7 +61,7 @@ En general debemos determinar la configuración articular de un manipulador, dad
 
 El modelo geométrico construido se muestra a continuación.
 
-<p align="center"><img src="./Images/CI1.png" width=70%></p>
+<p align="center"><img src="./Images/CI1.png" width=60%></p>
 
 y en general usando algunas relaciones geométricas tenemos:
 
@@ -88,11 +88,66 @@ Existen multiples comandos del toolbox de Peter Corke que funcionan para determi
 * **SerialLink.ikine_sym** : Calcula la cinemática inversa de forma simbolica, con multiples celdas dependiendo del numero de configuraciones diferentes que se puedan tener para la solucion. Requiere el Symbolic Toolbox de Matlab y es codigo experimental.
 
 
+# Modelo de cinemática inversa del manipulador en Python:
+
+A continuación se presenta nuestra solución para el problema de cinemática inversa en Python para el robot Phantom X con configuración codo arriba.
+
+
+```
+def invKinPhantomX(T):
+    """
+    Calcula los valores q de la cinematica inversa para el robot Phantom X
+    en configuracion codo arriba.
+    T: Matriz de transformacion Homogenea
+    Salida:
+    q: Lista de las valores para las 4 articulaciones en grados. 
+    """
+    q = [0.0, 0.0, 0.0, 0.0]
+    # l = [4.5, 10.5, 10.5, 7.5]
+    l = np.array([14.5, 10.7, 10.7, 9])
+    try:
+        #Desacople de muñeca
+        posW = T[0:3, 3] - l[3]*T[0:3, 2]
+    
+        #Solucion para q1 en rad
+        q[0] = math.atan2(T[1,3], T[0,3]) 
+
+        #Solución de mecanismo 2R para q2 y q3
+        h = round(posW[2] - l[0],3)
+        r = round(math.sqrt(posW[0]**2 + posW[1]**2),3)
+
+        #Solucion para q3
+        q[2]= math.acos(round((r**2+h**2-l[1]**2-l[2]**2)/(2*l[1]*l[2]), 3))*(-1)
+        #Solucion para q2 usando q3
+        q[1] = math.atan2(h,r) + math.atan2(l[2]*math.sin(-q[2]), l[1]+l[2]*math.cos(-q[2]))
+        #Se resta el offset de la articulacion
+        q[1] = q[1] - math.pi/2   
+
+        #Solucion para q4
+        phi = math.atan2(T[2,2], math.sqrt(T[0,2]**2 +T[1,2]**2)) - math.pi/2
+        q[3] = phi - q[1] - q[2]
+        # Rp = rotz(q[0]).transpose() @ np.array(T[0:3, 0:3])
+        # pitch = math.atan2(float(Rp[2,0]),float(Rp[0,0]))
+        # q[3] = float(pitch) - q[1] - q[2]
+        # while q[3] > (7/6)*math.pi:
+        #     q[3] -= 2*math.pi
+        q = [value*180/math.pi for value in q]
+        return q
+        
+    except ValueError:
+        print("Esta posicion no puede ser alcanzada, o por lo menos no en esta configuracion.")
+```
+
+
+Se realizarón algunas simulaciones por medio del Toolbox de Peter Corke para algunas posiciones, esto junto con las MTH nos permitó comprobar que el modelo programado de cinemática inversa para el Phantom X funcionaba de manera adecuada.
+
+<p align="center"><img src="./Images/Simulacion.png" width=55%></p>
 
 ## Video de la producción de trayectorias desarrolladas a partir de Python con el modelo de cinemática inversa
 
+En el video a continuación se presenta en general el funcionamiento de generación de trayectorias de nuestro script en el laboratorio con el robot Pincher Phantom X.
 
-<video align="center" width="640" height="480" controls>
+<video width="640" height="480" controls align="center">
   <source src="./Video/VideoLAB5.mp4" type="video/mp4">
 </video>
 
