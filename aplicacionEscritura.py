@@ -63,19 +63,19 @@ def ctrlMove():
            # jointCommand('', motor_id, 'Goal_Position', pos_target[motor_id-1], 0.5)
            # print("Articulación "+ current_joint +" a pos_target"+"\n")
         if pressedKey == "a":  #Go to Home
-            grip()
+            grip(840)
         if pressedKey == "d":  #Go to Home
             grip(600)
         if pressedKey == "w":  #Go to Home
-            drawGeometry([[20,5],[20,-5],[24,-5],[24,5]],30)
+            drawGeometry([[20,5],[20,-5],[24,-5],[24,5]],11,20)
         
 if __name__== '__main__':
     try:
-        limitTorque()
+        limitTorque([600,500,400,300,600])
         sendHome()
-        ctrlMove()
         print("Press 'a' to grip marker.")
         print("Press 'd' to stop gripping marker.")
         print("Press 'w' to draw the figure.")
+        ctrlMove()
     except rospy.ROSInterruptException:
         pass

@@ -52,18 +52,18 @@ def invKinPhantomX(T):
     except ValueError:
         print("Esta posicion no puede ser alcanzada, o por lo menos no en esta configuracion.")
 
-def drawGeometry(points:list, lineSteps:int=10):
+def drawGeometry(points:list, zDraw=9, lineSteps:int=10):
     #Ubicar en posicion cercana al tablero para dibujar.
     pitchDraw = math.pi/2
     home = (0,0,44.9,0)
-    home2 = (10,10,15,pitchDraw) #Calibrar altura!!!
+    home2 = (10,10,12,pitchDraw) #Calibrar altura!!!
     steps = stepCoordinates(home,home2,lineSteps)
     qList = []
     for x,y,z,pitch in zip(*steps):
         qList.append(findQ(x,y,z,pitch))
+    print("Moving towards the board!")
+    print(qList)
     linearMove(qList)
-
-    zDraw = 11.5  #Calibrar altura!!!
     previous=home2
     points.append(points[0]) # Para cerrar la geometria.
     for point in points:
@@ -71,6 +71,8 @@ def drawGeometry(points:list, lineSteps:int=10):
         qList = []
         for x,y,z,pitch in zip(*steps):
             qList.append(findQ(x,y,z,pitch))
+        print(f"Moving towards the point {point}")
+        print(qList)
         linearMove(qList)
         previous = (point[0],point[1],zDraw, pitchDraw)
     
@@ -79,15 +81,20 @@ def drawGeometry(points:list, lineSteps:int=10):
     qList = []
     for x,y,z,pitch in zip(*steps):
         qList.append(findQ(x,y,z,pitch))
+    print("Moving away from the board!")
+    print(qList)
     linearMove(qList)
     steps = stepCoordinates(home2,home,lineSteps)
     qList = []
     for x,y,z,pitch in zip(*steps):
         qList.append(findQ(x,y,z,pitch))
+    print("Moving towards home!")
+    print(qList)
     linearMove(qList)
         
 def jointCommand(id_num:int, addr_name:str, value:int, time):
     command = ""
+    time = 0.1
     rospy.wait_for_service('dynamixel_workbench/dynamixel_command')
     try:        
         dynamixel_command = rospy.ServiceProxy(
@@ -137,7 +144,6 @@ def findQ(x,y,z,pitch):
     T = np.array(SE3.Trans(x,y,z)*SE3.Ry(pitch))
     #print(T)
     q = invKinPhantomX(T)
-    print(q)
     for value in q:
         if not -150 < value < 150:
             raise Exception("One of the values is outside the range of motion.")
@@ -147,12 +153,12 @@ def linearMove(qList):
     """Input a list of lists of q values."""
     for q in qList:
         for i, value in enumerate(q):
-            jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.001)
+            jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.05)
 
 def sendHome():
-    q = [0,0,0,0]
+    q = [0,0,0,0,0]
     for i, value in enumerate(q):
-        jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.02)
+        jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.05)
 
 def limitTorque(limits:list=[500,400,300,300,600]):
     jointCommand(1, 'Torque_Limit', limits[0], 0)
