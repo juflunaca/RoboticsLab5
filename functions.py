@@ -58,26 +58,33 @@ def drawGeometry(points:list, lineSteps:int=10):
     home = (0,0,44.9,0)
     home2 = (10,10,15,pitchDraw) #Calibrar altura!!!
     steps = stepCoordinates(home,home2,lineSteps)
+    qList = []
     for x,y,z,pitch in zip(*steps):
-        print(x,y,z,pitch)
-        linearMove(x,y,z,pitch)
+        qList.append(findQ(x,y,z,pitch))
+    linearMove(qList)
 
     zDraw = 11.5  #Calibrar altura!!!
     previous=home2
     points.append(points[0]) # Para cerrar la geometria.
     for point in points:
         steps = stepCoordinates(previous,(point[0],point[1],zDraw,pitchDraw),lineSteps)
+        qList = []
         for x,y,z,pitch in zip(*steps):
-            linearMove(x,y,z,pitch)
+            qList.append(findQ(x,y,z,pitch))
+        linearMove(qList)
         previous = (point[0],point[1],zDraw, pitchDraw)
     
     #Retornar a posicion cercana a dibujar y luego a home.
     steps = stepCoordinates(previous,home2,lineSteps)
+    qList = []
     for x,y,z,pitch in zip(*steps):
-        linearMove(x,y,z,pitch)
+        qList.append(findQ(x,y,z,pitch))
+    linearMove(qList)
     steps = stepCoordinates(home2,home,lineSteps)
+    qList = []
     for x,y,z,pitch in zip(*steps):
-        linearMove(x,y,z,pitch)
+        qList.append(findQ(x,y,z,pitch))
+    linearMove(qList)
         
 def jointCommand(id_num:int, addr_name:str, value:int, time):
     command = ""
@@ -126,16 +133,21 @@ def stepCoordinates(origin:tuple, endpoint:tuple, steps:int):
         pitch.append(origin[3]+pitchStep*i)
     return (x,y,z,pitch)
 
-def linearMove(x,y,z,pitch):
+def findQ(x,y,z,pitch):
     T = np.array(SE3.Trans(x,y,z)*SE3.Ry(pitch))
     #print(T)
     q = invKinPhantomX(T)
     print(q)
     for value in q:
         if not -150 < value < 150:
-            raise Exception("The value, or one of them, is outside the range of conversion.")
-    for i, value in enumerate(q):
-        jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.001)
+            raise Exception("One of the values is outside the range of motion.")
+    return q
+        
+def linearMove(qList):
+    """Input a list of lists of q values."""
+    for q in qList:
+        for i, value in enumerate(q):
+            jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.001)
 
 def sendHome():
     q = [0,0,0,0]
