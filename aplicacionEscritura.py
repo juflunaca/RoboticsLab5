@@ -38,40 +38,44 @@ def ctrlMove():
     joints=['waist', 'shoulder', 'elbow', 'wrist']
     while pressedKey!="x":
         pressedKey=getkey()
-        if pressedKey == "w":   #Next Joint
-            motor_id=joints.index(current_joint)+1
-            if motor_id<4:
-                current_joint=joints[motor_id]
-                motor_id+=1
-            else: 
-                current_joint=joints[0]
-                motor_id=joints.index(current_joint)+1
-            print("Articulación actual: "+current_joint+"\n")
-            #print("Motor: "+str(motor_id))
-        if pressedKey == "s":  #Previous Joint
-            motor_id=joints.index(current_joint)+1
-            if motor_id>1:
-                current_joint=joints[motor_id-2]
-                motor_id-=1
-            else: 
-                current_joint=joints[len(joints)-1]
-                motor_id=joints.index(current_joint)+1
-            print("Articulación actual: "+current_joint+"\n")
-            #print("Motor: "+str(motor_id))
-        if pressedKey == "d":   #Go to target position
-            #motor_id=joints.index(current_joint)+1
-            jointCommand('', motor_id, 'Goal_Position', pos_target[motor_id-1], 0.5)
-            print("Articulación "+ current_joint +" a pos_target"+"\n")
+       # if pressedKey == "w":   #Next Joint
+           # motor_id=joints.index(current_joint)+1
+           # if motor_id<4:
+             #   current_joint=joints[motor_id]
+            #    motor_id+=1
+           # else: 
+           #     current_joint=joints[0]
+          #      motor_id=joints.index(current_joint)+1
+         #   print("Articulación actual: "+current_joint+"\n")
+        #    #print("Motor: "+str(motor_id))
+       # if pressedKey == "s":  #Previous Joint
+         #   motor_id=joints.index(current_joint)+1
+         #   if motor_id>1:
+            #    current_joint=joints[motor_id-2]
+           #     motor_id-=1
+          #  else: 
+         #       current_joint=joints[len(joints)-1]
+         #       motor_id=joints.index(current_joint)+1
+        #    print("Articulación actual: "+current_joint+"\n")
+       #     #print("Motor: "+str(motor_id))
+       # if pressedKey == "d":   #Go to target position
+           # #motor_id=joints.index(current_joint)+1
+           # jointCommand('', motor_id, 'Goal_Position', pos_target[motor_id-1], 0.5)
+           # print("Articulación "+ current_joint +" a pos_target"+"\n")
         if pressedKey == "a":  #Go to Home
-            #motor_id=joints.index(current_joint)+1
-            jointCommand('', motor_id, 'Goal_Position', pos_home[motor_id-1], 0.5)
-            print("Articulación "+ current_joint +" a pos_home"+"\n")
+            grip()
+        if pressedKey == "d":  #Go to Home
+            grip(600)
+        if pressedKey == "w":  #Go to Home
+            drawGeometry([[20,5],[20,-5],[24,-5],[24,5]],30)
         
 if __name__== '__main__':
     try:
-        print("Utilice W & S para subir o bajar entre articulaciones.")
-        print("Utilice A & D para mover la articulacion a Home o a la posicion objetivo respectivamente.")
         limitTorque()
+        sendHome()
         ctrlMove()
+        print("Press 'a' to grip marker.")
+        print("Press 'd' to stop gripping marker.")
+        print("Press 'w' to draw the figure.")
     except rospy.ROSInterruptException:
         pass
