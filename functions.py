@@ -52,11 +52,11 @@ def invKinPhantomX(T):
     except ValueError:
         print("Esta posicion no puede ser alcanzada, o por lo menos no en esta configuracion.")
 
-def drawGeometry(points:list, zDraw=9, lineSteps:int=10):
+def drawGeometry(points:list, zDraw=12, lineSteps:int=10):
     #Ubicar en posicion cercana al tablero para dibujar.
     pitchDraw = math.pi/2
     home = (0,0,44.9,0)
-    home2 = (10,10,12,pitchDraw) #Calibrar altura!!!
+    home2 = (20,8,16,pitchDraw) #Calibrar altura!!!
     steps = stepCoordinates(home,home2,lineSteps)
     qList = []
     for x,y,z,pitch in zip(*steps):
@@ -94,7 +94,7 @@ def drawGeometry(points:list, zDraw=9, lineSteps:int=10):
         
 def jointCommand(id_num:int, addr_name:str, value:int, time):
     command = ""
-    time = 0.1
+    time = 0
     rospy.wait_for_service('dynamixel_workbench/dynamixel_command')
     try:        
         dynamixel_command = rospy.ServiceProxy(
@@ -153,14 +153,15 @@ def linearMove(qList):
     """Input a list of lists of q values."""
     for q in qList:
         for i, value in enumerate(q):
-            jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.05)
+            jointCommand(i+1,'Goal_Position',deg2TenBit(value),0)
 
-def sendHome():
-    q = [0,0,0,0,0]
+def sendHome(q = [0,0,0,0]):
+    limitTorque([400,600,400,300,600])
     for i, value in enumerate(q):
-        jointCommand(i+1,'Goal_Position',deg2TenBit(value),0.05)
+        jointCommand(i+1,'Goal_Position',deg2TenBit(value),0)
+    limitTorque()
 
-def limitTorque(limits:list=[500,400,300,300,600]):
+def limitTorque(limits:list=[400,450,400,300,600]):
     jointCommand(1, 'Torque_Limit', limits[0], 0)
     jointCommand(2, 'Torque_Limit', limits[1], 0)
     jointCommand(3, 'Torque_Limit', limits[2], 0)
@@ -172,3 +173,93 @@ def grip(value=850):
         print("The value is outside the range (0 to 1023).")
     else:
         jointCommand(5, 'Goal_Position', value, 0)
+
+def gripMarker(zGrip=14, lineSteps:int=12):
+    sendHome()
+    grip(400)
+    pitchGrip = math.pi/2
+    home = (0,0,44.9,0)
+    home2 = (11.2,-10.9,zGrip,pitchGrip)
+    markerPos = (13.2,-12.8,zGrip,pitchGrip) #Calibrar altura!!!
+    markerPosUp = (13.2,-12.8,zGrip+8,pitchGrip) 
+    steps = stepCoordinates(home,home2,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Moving towards the marker!")
+    print(qList)
+    linearMove(qList)
+    steps = stepCoordinates(home2,markerPos,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Fine approacching!")
+    print(qList)
+    linearMove(qList)
+    grip()
+    print("Marker gripped!")
+    steps = stepCoordinates(markerPos,markerPosUp,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Moving upwards!")
+    print(qList)
+    linearMove(qList)
+    steps = stepCoordinates(markerPosUp,home,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Moving home!")
+    print(qList)
+    linearMove(qList)
+
+def drawWorkspace(zDraw = 14, lineSteps=12):
+    findQ(30.1,0,14,math.pi/2)
+    #Ubicar en posicion cercana al tablero para dibujar.
+    pitchDraw = math.pi/2
+    home = (0,0,44.9,0)
+    home2 = (30,0,zDraw,math.pi/2) #Calibrar altura!!!
+    hover = (27,0,zDraw+6,math.pi/2)
+    home3 = (14.8,0,zDraw,math.pi/2) #Calibrar altura!!!
+
+    # steps = stepCoordinates(home,home2,lineSteps)
+    # qList = []
+    # for x,y,z,pitch in zip(*steps):
+    #     qList.append(findQ(x,y,z,pitch))
+    # print("Moving towards the board!")
+    # print(qList)
+    # linearMove(qList)
+    # jointCommand(1,'Goal_Position',deg2TenBit(75),0)
+    # rospy.sleep(1)
+    # jointCommand(1,'Goal_Position',deg2TenBit(-30),0)
+    # rospy.sleep(1)
+    # jointCommand(1,'Goal_Position',deg2TenBit(0),0)
+    # rospy.sleep(1)
+    # steps = stepCoordinates(home2,hover,lineSteps)
+    # qList = []
+    # for x,y,z,pitch in zip(*steps):
+    #     qList.append(findQ(x,y,z,pitch))
+    # print("Moving away from the board!")
+    # print(qList)
+    # linearMove(qList)
+    
+    steps = stepCoordinates(hover,home3,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Moving towards the board!")
+    print(qList)
+    linearMove(qList)
+    jointCommand(1,'Goal_Position',deg2TenBit(150),0)
+    rospy.sleep(1)
+    jointCommand(1,'Goal_Position',deg2TenBit(-150),0)
+    rospy.sleep(1)
+    jointCommand(1,'Goal_Position',deg2TenBit(0),0)
+    rospy.sleep(1)
+    steps = stepCoordinates(home3,home,lineSteps)
+    qList = []
+    for x,y,z,pitch in zip(*steps):
+        qList.append(findQ(x,y,z,pitch))
+    print("Moving away from the board!")
+    print(qList)
+    linearMove(qList)

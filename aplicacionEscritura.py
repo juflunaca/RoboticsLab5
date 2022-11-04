@@ -8,10 +8,6 @@ __credits__ = ["Felipe Gonzalez", "Sebastian Realpe", "Jose Manuel Fajardo", "Ro
 
 TERMIOS = termios
 
-motor_id = 1
-pos_home = [512, 512, 512, 512]
-pos_target = [768, 256, 768, 256]
-
 def getkey():
     fd = sys.stdin.fileno()
     old = termios.tcgetattr(fd) #retorna lista que contiene los atributos del descriptor
@@ -29,49 +25,20 @@ def getkey():
 
 #Esta función crea un publicador para enviar los parámetros asociados a las rutinas que se invocan con las teclas de control.
 def ctrlMove():
-    global current_joint
-    global motor_id
-    global pos_target
-    global pos_home
     pressedKey=""
-    val=0
-    joints=['waist', 'shoulder', 'elbow', 'wrist']
+
     while pressedKey!="x":
         pressedKey=getkey()
-       # if pressedKey == "w":   #Next Joint
-           # motor_id=joints.index(current_joint)+1
-           # if motor_id<4:
-             #   current_joint=joints[motor_id]
-            #    motor_id+=1
-           # else: 
-           #     current_joint=joints[0]
-          #      motor_id=joints.index(current_joint)+1
-         #   print("Articulación actual: "+current_joint+"\n")
-        #    #print("Motor: "+str(motor_id))
-       # if pressedKey == "s":  #Previous Joint
-         #   motor_id=joints.index(current_joint)+1
-         #   if motor_id>1:
-            #    current_joint=joints[motor_id-2]
-           #     motor_id-=1
-          #  else: 
-         #       current_joint=joints[len(joints)-1]
-         #       motor_id=joints.index(current_joint)+1
-        #    print("Articulación actual: "+current_joint+"\n")
-       #     #print("Motor: "+str(motor_id))
-       # if pressedKey == "d":   #Go to target position
-           # #motor_id=joints.index(current_joint)+1
-           # jointCommand('', motor_id, 'Goal_Position', pos_target[motor_id-1], 0.5)
-           # print("Articulación "+ current_joint +" a pos_target"+"\n")
-        if pressedKey == "a":  #Go to Home
+        if pressedKey == "a":  #Grip marker
             grip(840)
-        if pressedKey == "d":  #Go to Home
+        if pressedKey == "d":  #Drop Marker
             grip(600)
-        if pressedKey == "w":  #Go to Home
+        if pressedKey == "w":  #Draw rectangle
             drawGeometry([[20,5],[20,-5],[24,-5],[24,5]],11,20)
         
 if __name__== '__main__':
     try:
-        limitTorque([600,500,400,300,600])
+        limitTorque([400,450,400,300,600])
         sendHome()
         print("Press 'a' to grip marker.")
         print("Press 'd' to stop gripping marker.")
