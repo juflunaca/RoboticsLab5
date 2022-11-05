@@ -155,18 +155,18 @@ Los videos de a continuación presentan en general el funcionamiento de generaci
   <source src="./Videos/Video1LAB5.mp4" type="video/mp4">
 </video>
 
-* Video 1 (GH) *
-https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/Video1LAB5.mp4
+* Video 1 (GH) 
+https://github.com/juflunaca/RoboticsLab5/blob/64b6137922b62e40f6e46c3e346f1174fcf02b6d/Videos/Video1LAB5.mp4
 
 <video width="640" height="480" controls align="center">
   <source src="./Videos/Video1LAB5.mp4" type="video/mp4">
 </video>
 
-* Video 2 (GH) *
-* https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/Video2LAB5.mp4
+* Video 2 (GH) 
+https://github.com/juflunaca/RoboticsLab5/blob/64b6137922b62e40f6e46c3e346f1174fcf02b6d/Videos/Video2LAB5.mp4
 
   
-* Link videos (Drive) *
+* Link videos (Drive) 
 * https://drive.google.com/file/d/1rxtv4TgNXMGzV9egYUY8DD0z4AJMl3W3/view?usp=sharing
   
 * https://drive.google.com/file/d/1A6r7T7L6PWKS3PDgmmBf_21xc8lh1qCH/view?usp=sharing
