@@ -94,6 +94,7 @@ A continuación se presenta nuestra solución para el problema de cinemática in
 
 
 ```
+
 def invKinPhantomX(T):
     """
     Calcula los valores q de la cinematica inversa para el robot Phantom X
@@ -136,25 +137,39 @@ def invKinPhantomX(T):
         
     except ValueError:
         print("Esta posicion no puede ser alcanzada, o por lo menos no en esta configuracion.")
+
 ```
 
 
-Se realizarón algunas simulaciones por medio del Toolbox de Peter Corke para algunas posiciones, esto junto con las MTH nos permitó comprobar que el modelo programado de cinemática inversa para el Phantom X funcionaba de manera adecuada.
+Se realizarón algunas simulaciones haciendo uso del Toolbox de Peter Corke para algunas posiciones, esto junto con las MTH nos permitó comprobar que el modelo programado de cinemática inversa para el Phantom X funcionaba de manera adecuada.
 
 <p align="center"><img src="./Images/Simulacion.png" width=55%></p>
 
+Se realizó un script para realizar distintas figuras haciendo uso de la cinemática inversa (esta parte se mostró previamente), se realizó una figura geométrica (Primer video), para este video el marcador es ubicado en el efector de manera manual y se realiza la figura primero realizando una aproximación al punto inicial. También se realizó dos arcos y una estrella, en este caso el marcador se ubica en una base, en esta posición es recogido por el efector final, se posiciona el manipulador para hacer el acercamiento, hace el acercamiento, realiza la estrella o los dos arcos según el caso y se devuelve a la posición de home.
+
 ## Video de la producción de trayectorias desarrolladas a partir de Python con el modelo de cinemática inversa
 
-En el video a continuación se presenta en general el funcionamiento de generación de trayectorias de nuestro script en el laboratorio con el robot Pincher Phantom X.
+Los videos de a continuación presentan en general el funcionamiento de generación de trayectorias de nuestro script en el laboratorio con el robot Pincher Phantom X.
 
 <video width="640" height="480" controls align="center">
-  <source src="./Video/VideoLAB5.mp4" type="video/mp4">
+  <source src="./Videos/Video1LAB5.mp4" type="video/mp4">
 </video>
 
-* Video (GH) *
-https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/VideoLAB5.mp4
-* Link video (Drive) *
-https://drive.google.com/file/d/1NqF9zoS2SGtQgKIfXYO85F51QDGeslfr/view?usp=sharing
+* Video 1 (GH) *
+https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/Video1LAB5.mp4
+
+<video width="640" height="480" controls align="center">
+  <source src="./Videos/Video1LAB5.mp4" type="video/mp4">
+</video>
+
+* Video 2 (GH) *
+* https://github.com/juflunaca/RoboticsLab5/blob/ee813425c0f81438fae122e540a658a51742dbe0/Video/Video2LAB5.mp4
+
+  
+* Link videos (Drive) *
+* https://drive.google.com/file/d/1rxtv4TgNXMGzV9egYUY8DD0z4AJMl3W3/view?usp=sharing
+  
+* https://drive.google.com/file/d/1A6r7T7L6PWKS3PDgmmBf_21xc8lh1qCH/view?usp=sharing
 
 ## Exactitud  y precisión
 
